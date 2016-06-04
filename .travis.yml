@@ -1,6 +1,10 @@
 language: scala
 sudo: required
 
+# disable the default submodule logic
+git:
+  submodules: false
+
 services:
   - docker
 
