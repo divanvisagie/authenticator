@@ -15,5 +15,5 @@ script: travis_retry sbt ++$TRAVIS_SCALA_VERSION clean test
 
 
 after_success:
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker login -u $DOCKER_USERNAME" -p $DOCKER_PASSWORD 
   - sh docker-build.sh
