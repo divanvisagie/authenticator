@@ -1,5 +1,8 @@
 language: scala
 
+services:
+  - docker
+
 scala:
   - 2.11.7
 
@@ -14,5 +17,5 @@ script: travis_retry sbt ++$TRAVIS_SCALA_VERSION clean test
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - sbt docker:stage
-  - docker build -t divanvisagie/SwissGuard server/target/docker/stage
-  - docker push divanvisagie/SwissGuard
+  - docker build -t divanvisagie/swissguard server/target/docker/stage
+  - docker push divanvisagie/swissguard
