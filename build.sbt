@@ -51,6 +51,7 @@ lazy val idl = (project in file("idl")).
   )
 
 lazy val server = (project in file("server")).
+  enablePlugins(JavaServerAppPackaging).
   settings(baseSettings).
   settings(
     name := "thrift-server",
