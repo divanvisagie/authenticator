@@ -5,6 +5,9 @@ sudo: required
 git:
   submodules: false
 
+before_install:
+  - git submodule update --init --recursive
+
 services:
   - docker
 
@@ -18,8 +21,7 @@ jdk:
 
 script: travis_retry sbt ++$TRAVIS_SCALA_VERSION clean test
 
-before_script:
-  - git submodule update
+
 
 after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
