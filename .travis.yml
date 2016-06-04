@@ -9,3 +9,10 @@ jdk:
   - oraclejdk8
 
 script: travis_retry sbt ++$TRAVIS_SCALA_VERSION clean test
+
+
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - sbt docker:stage
+  - docker build -t divanvisagie/lazy-places target/docker/stage
+  - docker push divanvisagie/lazy-places
