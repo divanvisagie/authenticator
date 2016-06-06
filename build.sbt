@@ -57,7 +57,7 @@ lazy val server = (project in file("server")).
     name := "thrift-server",
     moduleName := "thrift-server",
     packageName in Docker := "divanvisagie/swissguard",
-    dockerBaseImage := "java:alpine",
+    // dockerBaseImage := "java:alpine",
     libraryDependencies ++= Seq(
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra,
       "ch.qos.logback" % "logback-classic" % versions.logback,
