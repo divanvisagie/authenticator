@@ -1,6 +1,15 @@
 language: scala
 sudo: required
 
+# disable the default submodule logic
+git:
+  submodules: false
+
+# Use sed to replace the SSH URL with the public URL, then initialize submodules
+before_install:
+    - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+    - git submodule update --init --recursive
+
 services:
   - docker
 
@@ -13,6 +22,7 @@ jdk:
   - oraclejdk8
 
 script: travis_retry sbt ++$TRAVIS_SCALA_VERSION clean test
+
 
 
 after_success:

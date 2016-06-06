@@ -37,7 +37,7 @@ lazy val root = (project in file(".")).
     idl,
     server)
 
-lazy val idl = (project in file("idl")).
+lazy val idl = (project in file("swiss-guard-idl")).
   settings(baseSettings).
   settings(
     name := "thrift-idl",
