@@ -7,7 +7,7 @@ import scala.slick.driver.PostgresDriver.simple._
 //   CONSTRAINT pk PRIMARY KEY (id)
 // )
 // insert into users(username) values ('john'), ('mary');
-object Main {
+object SlickExample {
 
   // this is a class that represents the table I've created in the database
   class Users(tag: Tag) extends Table[(Int, String)](tag, "users") {
