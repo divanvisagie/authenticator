@@ -62,6 +62,12 @@ lazy val server = (project in file("server")).
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra,
       "ch.qos.logback" % "logback-classic" % versions.logback,
 
+      // postgres dependencies
+      "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",
+      "com.typesafe.slick" %% "slick" % "2.1.0",
+      "org.slf4j" % "slf4j-nop" % "1.6.4",
+      // end of that
+
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra % "test",
       "com.twitter.inject" %% "inject-app" % versions.finatra % "test",
       "com.twitter.inject" %% "inject-core" % versions.finatra % "test",
