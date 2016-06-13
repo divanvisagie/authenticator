@@ -16,7 +16,7 @@ object SlickExample {
     def * = (id, username)
   }
 
-  def main(args: Array[String]): Unit = {
+  def doQuery(args: Array[String]): Unit = {
 
     // my database server is located on the localhost
     // database name is "my-db"
