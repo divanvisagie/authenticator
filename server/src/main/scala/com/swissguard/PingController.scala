@@ -1,7 +1,8 @@
-package com.example
+package com.swissguard
 
 import com.example.ping.thriftscala.PingService
 import com.example.ping.thriftscala.PingService.Ping
+
 import com.twitter.finatra.thrift.Controller
 import com.twitter.util.Future
 import javax.inject.Singleton

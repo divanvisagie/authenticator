@@ -1,4 +1,4 @@
-package com.example
+package com.swissguard
 
 import com.twitter.finatra.thrift.ThriftServer
 import com.twitter.finatra.thrift.routing.ThriftRouter
@@ -17,6 +17,6 @@ class ExampleServer extends ThriftServer {
       .filter[AccessLoggingFilter]
       .filter[StatsFilter]
       .filter[ExceptionTranslationFilter]
-      .add[PingController]
+      .add[UserController] //We can only have one in thrift
   }
 }

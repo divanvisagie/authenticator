@@ -3,6 +3,7 @@ package com.example
 import com.google.inject.Stage
 import com.twitter.finatra.thrift.EmbeddedThriftServer
 import com.twitter.inject.server.FeatureTest
+import com.swissguard.ExampleServer
 
 class ExampleServerStartupTest extends FeatureTest {
 

@@ -1,3 +1,5 @@
+package com.swissguard
+
 import scala.slick.driver.PostgresDriver.simple._
 
 // CREATE TABLE users
