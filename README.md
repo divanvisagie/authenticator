@@ -19,14 +19,16 @@ cd database/flyway/conf
 flyway
 ```
 
+#### Windows
+Install a real OS
+
 ### Update Submodules
 
 ```sh
 git submodule update --init --recursive
 ```
 
-#### Windows
-Install a real OS
+
 
 
 ## License
