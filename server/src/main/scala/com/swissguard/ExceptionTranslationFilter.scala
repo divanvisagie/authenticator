@@ -1,5 +1,7 @@
 package com.swissguard
 
+import java.lang.Exception
+
 import com.twitter.finagle.{Service, TimeoutException}
 import com.twitter.finatra.thrift.thriftscala.ClientErrorCause.RequestTimeout
 import com.twitter.finatra.thrift.thriftscala.ServerErrorCause.InternalServerError
@@ -8,6 +10,8 @@ import com.twitter.finatra.thrift.{ThriftFilter, ThriftRequest}
 import com.twitter.inject.Logging
 import com.twitter.util.{Future, NonFatal}
 import javax.inject.Singleton
+
+import scala.util.control.Exception
 
 @Singleton
 class ExceptionTranslationFilter

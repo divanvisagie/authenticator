@@ -4,10 +4,10 @@ import com.twitter.finatra.thrift.ThriftServer
 import com.twitter.finatra.thrift.routing.ThriftRouter
 import com.twitter.finatra.thrift.filters._
 
-object ExampleServerMain extends ExampleServer
+object SwissGuardServerMain extends ExampleServer
 
 class ExampleServer extends ThriftServer {
-  override val name = "example-server"
+  override val name = "swiss-guard"
 
   override def configureThrift(router: ThriftRouter) {
     router
