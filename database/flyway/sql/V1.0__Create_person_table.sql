@@ -6,4 +6,4 @@ CREATE TABLE users
   CONSTRAINT pk PRIMARY KEY (id)
 );
 
-insert into users(username) values ('john'), ('mary');
+insert into users(username,password_hash) values ('john','johns-hash'), ('mary','marys-hash');

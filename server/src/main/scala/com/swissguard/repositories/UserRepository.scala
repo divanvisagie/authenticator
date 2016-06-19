@@ -24,10 +24,10 @@ class UserRepository @Inject()(db: Database) {
       users.filter(_.username === username).take(1).result
     }.map(_.headOption)
 
-  def listUsers: Future[List[User]] =
+  def listUsers: Future[Seq[User]] =
     db.run {
       users.result
-    }.map(_.toList)
+    }
 
 }
 

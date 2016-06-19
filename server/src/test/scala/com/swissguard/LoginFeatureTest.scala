@@ -1,7 +1,9 @@
 package com.swissguard
 
+import com.google.inject.testing.fieldbinder.Bind
 import com.swissguard.user.thriftscala.{UserRequest, UserService}
 import com.twitter.finatra.thrift.EmbeddedThriftServer
+import com.twitter.inject.Mockito
 import com.twitter.inject.server.FeatureTest
 import com.twitter.util._
 
@@ -30,7 +32,7 @@ class LoginFeatureTest extends FeatureTest {
   }
 }
 
-class UserListFeatureTest extends FeatureTest {
+class UserListFeatureTest extends FeatureTest with Mockito {
   override val server = new EmbeddedThriftServer(new ExampleServer)
 
   val client = server.thriftClient[UserService[Future]](clientId = "loginClient")
