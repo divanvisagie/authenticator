@@ -13,7 +13,8 @@ class UserRepository @Inject()(db: Database) {
   private class UserTable(tag: Tag) extends Table[User](tag, "users"){
     def id = column[Int]("id")
     def username = column[String]("username")
-    def * = (id, username) <> ((User.apply _).tupled, User.unapply)
+    def password = column[String]("passwprd")
+    def * = (id, username, password) <> ((User.apply _).tupled, User.unapply)
   }
 
   private val users = TableQuery[UserTable]
