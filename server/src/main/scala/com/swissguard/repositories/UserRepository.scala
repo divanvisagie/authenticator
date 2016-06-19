@@ -13,7 +13,7 @@ class UserRepository @Inject()(db: Database) {
   private class UserTable(tag: Tag) extends Table[User](tag, "users"){
     def id = column[Int]("id")
     def username = column[String]("username")
-    def password = column[String]("passwprd")
+    def password = column[String]("password_hash")
     def * = (id, username, password) <> ((User.apply _).tupled, User.unapply)
   }
 

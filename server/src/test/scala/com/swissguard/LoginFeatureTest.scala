@@ -30,4 +30,16 @@ class LoginFeatureTest extends FeatureTest {
   }
 }
 
+class UserListFeatureTest extends FeatureTest {
+  override val server = new EmbeddedThriftServer(new ExampleServer)
+
+  val client = server.thriftClient[UserService[Future]](clientId = "loginClient")
+
+  "user service" should {
+    "respond with list > 0" in {
+      client.listUsers().value.toList.length should be (2)
+    }
+  }
+}
+
 

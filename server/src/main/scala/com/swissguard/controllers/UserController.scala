@@ -3,12 +3,13 @@ package com.swissguard.controllers
 import javax.inject.{Inject, Singleton}
 
 import com.swissguard.domain.User
-import com.swissguard.user.thriftscala.UserService.{CreateUser, Login, ValidateToken}
+import com.swissguard.user.thriftscala.UserService.{CreateUser, ListUsers, Login, ValidateToken}
 import com.swissguard.user.thriftscala.{UserResponse, UserService}
 import com.twitter.finatra.thrift.Controller
 import com.twitter.util.Future
-
 import com.swissguard.services.{UserService => MyUserService}
+import com.swissguard.user.thriftscala.UserService.ListUsers.{Args, Result}
+import com.twitter.finagle.Service
 
 @Singleton
 class UserController @Inject()(userService: MyUserService)
@@ -29,5 +30,9 @@ class UserController @Inject()(userService: MyUserService)
 
     override def validateToken = handle(ValidateToken) { args: ValidateToken.Args =>
       Future value (args.token == "token-from-thrift")
+    }
+
+    override def listUsers = handle(ListUsers) { args: ListUsers.Args =>
+      userService listUsers
     }
 }

@@ -30,7 +30,11 @@ class UserService @Inject()(userRepository: UserRepository) {
     userRepository.findByUsername(username).toTwitterFuture
 
 
-  def listUsers : Future[List[User]] =
-    userRepository.listUsers.toTwitterFuture
+  def listUsers : Future[List[UserResponse]] =
+    userRepository.listUsers.toTwitterFuture map { userList =>
+      userList.map { user =>
+        User.toUserResponse(user)
+      }
+    }
 
 }
