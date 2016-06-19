@@ -23,8 +23,8 @@ jdk:
 
 script:
   - sbt clean
-  - server/flywayMigrate
-  - server/test
+  - sbt server/flywayMigrate
+  - sbt server/test
 
 after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
