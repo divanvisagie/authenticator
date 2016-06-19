@@ -39,7 +39,7 @@ class UserListFeatureTest extends FeatureTest with Mockito {
 
   "user service" should {
     "respond with list > 0" in {
-      client.listUsers().value.toList.length should be (2)
+      client.listUsers().value.toList.length should be > 2
     }
   }
 }

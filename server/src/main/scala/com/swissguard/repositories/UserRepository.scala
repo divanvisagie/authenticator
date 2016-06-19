@@ -11,7 +11,7 @@ class UserRepository @Inject()(db: Database) {
   implicit val session: Session = db.createSession()
 
   private class UserTable(tag: Tag) extends Table[User](tag, "users"){
-    def id = column[Int]("id")
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def username = column[String]("username")
     def password = column[String]("password_hash")
     def * = (id, username, password) <> ((User.apply _).tupled, User.unapply)
@@ -28,6 +28,16 @@ class UserRepository @Inject()(db: Database) {
     db.run {
       users.result
     }
+
+  def createUser(user: User) : Future[User] = {
+    db.run {
+      users.map(p => (p.username, p.password)) += (user.username, user.password)
+    }
+
+    db.run {
+      users.filter(_.username === user.username).take(1).result
+    }.map(_.head)
+  }
 
 }
 

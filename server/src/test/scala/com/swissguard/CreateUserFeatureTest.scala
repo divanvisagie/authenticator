@@ -17,9 +17,12 @@ class CreateUserFeatureTest extends FeatureTest with Mockito {
   val userClient = server.thriftClient[ThriftUserService[Future]](clientId = "createClient")
   "user service" should {
     "respond to createUser with token" in {
-      userClient.createUser(
+      val user = userClient.createUser(
         UserRequest("bob","bobby123")
-      ).value.token should be ("token-from-thrift")
+      ).value
+
+      user.token should be ("token-from-thrift")
+      user.username should be ("bob")
     }
   }
 }

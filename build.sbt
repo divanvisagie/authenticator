@@ -70,6 +70,7 @@ lazy val server = (project in file("server")).
     libraryDependencies ++= Seq(
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra,
       "ch.qos.logback" % "logback-classic" % versions.logback,
+      "com.github.t3hnar" % "scala-bcrypt_2.11" % "2.6",
 
       // postgres dependencies
       "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",

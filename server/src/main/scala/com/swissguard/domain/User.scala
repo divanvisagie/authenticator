@@ -15,10 +15,10 @@ object User {
       password = userRequest.password
     )
 
-  def toUserResponse(user: User) : UserResponse =
+  def toUserResponse(user: User, token: String = "") : UserResponse =
     UserResponse(
       username = user.username,
-      token = "",
+      token = token,
       id = user.id
     )
 }
