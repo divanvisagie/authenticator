@@ -1,3 +1,4 @@
+import org.flywaydb.sbt.FlywayPlugin.autoImport._
 import sbt.Keys._
 
 parallelExecution in ThisBuild := false
@@ -12,6 +13,8 @@ lazy val versions = new {
   val slick = "3.1.1"
   val bijection = "0.9.2"
 }
+
+
 
 lazy val baseSettings = Seq(
   version := "1.0.0-SNAPSHOT",
@@ -31,8 +34,8 @@ lazy val baseSettings = Seq(
 
 lazy val root = (project in file(".")).
   settings(
-    name := """finatra-thrift-seed""",
-    organization := "com.example",
+    name := """swissguard""",
+    organization := "com.swissguard",
     moduleName := "activator-thrift-seed"
   ).
   aggregate(
@@ -59,6 +62,10 @@ lazy val server = (project in file("server")).
     name := "thrift-server",
     moduleName := "thrift-server",
     packageName in Docker := "divanvisagie/swissguard",
+    flywayUrl := "jdbc:postgresql://localhost:5432/swissguard",
+    flywayUser := "postgres",
+    flywayPassword := "postgres",
+    flywayLocations += "com.swissguard.database.migrations",
     // dockerBaseImage := "java:alpine",
     libraryDependencies ++= Seq(
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra,
