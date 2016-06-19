@@ -9,7 +9,8 @@ git:
 before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive
-  - docker-compose up -d
+  - docker run -d -p 54321:5432  postgres:latest
+
 
 services:
   - docker
