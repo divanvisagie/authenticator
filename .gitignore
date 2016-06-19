@@ -8,3 +8,4 @@ sbt-ui.sbt
 classes/
 target/
 sbt-launch.jar
+volumes

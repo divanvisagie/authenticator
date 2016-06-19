@@ -9,6 +9,8 @@ lazy val versions = new {
   val mockito = "1.9.5"
   val scalatest = "2.2.3"
   val specs2 = "2.3.12"
+  val slick = "3.1.1"
+  val bijection = "0.9.2"
 }
 
 lazy val baseSettings = Seq(
@@ -62,9 +64,12 @@ lazy val server = (project in file("server")).
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra,
       "ch.qos.logback" % "logback-classic" % versions.logback,
 
+      "com.twitter" % "bijection-core_2.11" % versions.bijection,
+      "com.twitter" % "bijection-util_2.11" % versions.bijection,
+
       // postgres dependencies
       "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",
-      "com.typesafe.slick" %% "slick" % "2.1.0",
+      "com.typesafe.slick" %% "slick" % versions.slick,
       "org.slf4j" % "slf4j-nop" % "1.6.4",
       // end of that
 

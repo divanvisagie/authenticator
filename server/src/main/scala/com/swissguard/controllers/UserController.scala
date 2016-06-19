@@ -1,4 +1,4 @@
-package com.swissguard
+package com.swissguard.controllers
 
 import javax.inject.Singleton
 
