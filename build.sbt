@@ -65,7 +65,7 @@ lazy val server = (project in file("server")).
     flywayUrl := "jdbc:postgresql://localhost:5432/swissguard",
     flywayUser := "postgres",
     flywayPassword := "postgres",
-    flywayLocations += "com.swissguard.database.migrations",
+    flywayLocations += "filesystem:database/flyway/sql",
     // dockerBaseImage := "java:alpine",
     libraryDependencies ++= Seq(
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra,

@@ -2,6 +2,7 @@ CREATE TABLE users
 (
   id bigserial NOT NULL,
   username character varying,
+  password_hash character varying,
   CONSTRAINT pk PRIMARY KEY (id)
 );
 
