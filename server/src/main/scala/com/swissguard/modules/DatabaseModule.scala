@@ -6,7 +6,7 @@ import com.twitter.inject.TwitterModule
 
 object DatabaseModule extends TwitterModule{
   import slick.driver.PostgresDriver.api._
-  val connectionUrl = "jdbc:postgresql://localhost:5432/swissguard?user=postgres&password=postgres"
+  val connectionUrl = "jdbc:postgresql://localhost:54321/swissguard?user=postgres&password=postgres"
 
   @Singleton @Provides
   def provideDatabase(): Database =
