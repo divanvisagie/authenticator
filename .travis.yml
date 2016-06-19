@@ -7,8 +7,11 @@ git:
 
 # Use sed to replace the SSH URL with the public URL, then initialize submodules
 before_install:
-    - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-    - git submodule update --init --recursive
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - git submodule update --init --recursive
+  - docker run -d -p 54321:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=swissguard  postgres:latest
+
+
 
 services:
   - docker
@@ -17,13 +20,13 @@ scala:
   - 2.11.7
 
 jdk:
-  # - openjdk7
   - oraclejdk7
   - oraclejdk8
 
-script: travis_retry sbt ++$TRAVIS_SCALA_VERSION clean test
-
-
+script:
+  - sbt clean
+  - sbt server/flywayMigrate
+  - sbt server/test
 
 after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"

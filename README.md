@@ -10,17 +10,10 @@ A Finatra Thrift server application for users and authentication.
 ## Running
 
 ### Migrations
-#### Unix:
-
-Install flyway as a command line tool
 
 ```sh
-cd database/flyway/conf
-flyway
+sbt server/flywayMigrate
 ```
-
-#### Windows
-Install a real OS
 
 ### Update Submodules
 
