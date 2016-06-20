@@ -23,10 +23,7 @@ class UserController @Inject()(userService: MyUserService)
     override def login = handle(Login) { args: Login.Args =>
       userService.login(
         User.fromUserRequest(args.user)
-      ).map { valid =>
-        if (!valid) throw new Exception("Invalid password")
-        UserResponse(id = 0, username = args.user.username, "token-from-thrift")
-      }
+      )
     }
 
     override def validateToken = handle(ValidateToken) { args: ValidateToken.Args =>

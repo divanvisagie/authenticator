@@ -30,10 +30,13 @@ class UserService @Inject()(userRepository: UserRepository) {
     }
   }
 
-  def login(user: User): Future[Boolean] =
+  def login(user: User): Future[UserResponse] =
     userRepository.findByUsername(user.username).toTwitterFuture map[Boolean] {
       case Some(u: User) => user.password.isBcrypted(u.password.toString)
       case _ => false
+    } map { valid =>
+      if (!valid) throw new Exception("Invalid password")
+      UserResponse(id = 0, username = user.username, "token-from-thrift")
     }
 
   def findUserByUsername(username: String): Future[Option[User]] =
