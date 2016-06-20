@@ -1,7 +1,6 @@
 package com.swissguard
 
 import java.lang.Exception
-
 import com.twitter.finagle.{Service, TimeoutException}
 import com.twitter.finatra.thrift.thriftscala.ClientErrorCause.RequestTimeout
 import com.twitter.finatra.thrift.thriftscala.ServerErrorCause.InternalServerError
@@ -10,8 +9,6 @@ import com.twitter.finatra.thrift.{ThriftFilter, ThriftRequest}
 import com.twitter.inject.Logging
 import com.twitter.util.{Future, NonFatal}
 import javax.inject.Singleton
-
-import com.swissguard.controllers.InvalidPasswordException
 
 @Singleton
 class ExceptionTranslationFilter
@@ -29,7 +26,7 @@ class ExceptionTranslationFilter
         error("Unhandled exception", e)
         Future.exception(
           ServerError(InternalServerError, e.getMessage))
-      case e: InvalidPasswordException =>
+      case e: Exception =>
         Future.exception(e)
     }
   }

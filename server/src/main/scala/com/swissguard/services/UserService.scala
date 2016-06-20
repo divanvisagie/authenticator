@@ -24,8 +24,9 @@ class UserService @Inject()(userRepository: UserRepository) {
       password = user.password.bcrypt,
       username = user.username
     )
-    userRepository.createUser(safeUser).toTwitterFuture map { returnUser =>
-      User.toUserResponse(safeUser, "token-from-thrift")
+    userRepository.createUser(safeUser).toTwitterFuture map {
+      case Some(u: User) => User.toUserResponse(safeUser, "token-from-thrift")
+      case _ => throw new Exception("User exists")
     }
   }
 

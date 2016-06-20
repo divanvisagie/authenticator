@@ -9,8 +9,6 @@ import com.twitter.finatra.thrift.Controller
 import com.twitter.util.Future
 import com.swissguard.services.{UserService => MyUserService}
 
-class InvalidPasswordException(val message: String) extends Exception
-
 @Singleton
 class UserController @Inject()(userService: MyUserService)
   extends Controller
@@ -26,7 +24,7 @@ class UserController @Inject()(userService: MyUserService)
       userService.login(
         User.fromUserRequest(args.user)
       ).map { valid =>
-        if (!valid) throw new InvalidPasswordException("Invalid password")
+        if (!valid) throw new Exception("Invalid password")
         UserResponse(id = 0, username = args.user.username, "token-from-thrift")
       }
     }
