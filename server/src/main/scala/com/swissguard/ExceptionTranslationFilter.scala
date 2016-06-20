@@ -11,7 +11,7 @@ import com.twitter.inject.Logging
 import com.twitter.util.{Future, NonFatal}
 import javax.inject.Singleton
 
-import scala.util.control.Exception
+import com.swissguard.controllers.InvalidPasswordException
 
 @Singleton
 class ExceptionTranslationFilter
@@ -29,6 +29,8 @@ class ExceptionTranslationFilter
         error("Unhandled exception", e)
         Future.exception(
           ServerError(InternalServerError, e.getMessage))
+      case e: InvalidPasswordException =>
+        Future.exception(e)
     }
   }
 }

@@ -1,8 +1,11 @@
 package com.swissguard.repositories
 
 import javax.inject.Inject
+
 import com.swissguard.domain.User
+import slick.dbio.SuccessAction
 import slick.driver.PostgresDriver.api._
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -29,14 +32,28 @@ class UserRepository @Inject()(db: Database) {
       users.result
     }
 
-  def createUser(user: User) : Future[User] = {
-    db.run {
-      users.map(p => (p.username, p.password)) += (user.username, user.password)
+  def createUser(user: User) : Future[Option[User]] = {
+
+    val transaction = users.filter(_.username === user.username).result.headOption.flatMap {
+      case Some(u) => DBIO.successful(None)
+      case None =>
+        val userId =
+        (users returning users.map(_.id)) += User(
+          id = 0,
+          password = user.password,
+          username = user.username
+        )
+
+        val newUser = userId.map { id =>
+          User(id,user.username,"")
+        }
+        newUser
+    }.transactionally
+    db.run(transaction).map {
+      case u: User => Option(u)
+      case None => None
     }
 
-    db.run {
-      users.filter(_.username === user.username).take(1).result
-    }.map(_.head)
   }
 
 }
