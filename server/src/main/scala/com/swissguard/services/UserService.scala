@@ -29,12 +29,11 @@ class UserService @Inject()(userRepository: UserRepository) {
     }
   }
 
-  def login(user: User): Future[UserResponse] = {
-
-    user.password match {
-      case password if password == "bobby123" => Future value responseUser
-      case _ => Future exception new Exception("Invalid password")
-    } //"password".isBcrypted("$2a$10$iXIfki6AefgcUsPqR.niQ.FvIK8vdcfup09YmUxmzS/sQeuI3QOFG")
+  def login(user: User): Future[Boolean] = {
+    userRepository.findByUsername(user.username).toTwitterFuture map[Boolean] {
+      case Some(u: User) => user.password.isBcrypted(u.password.toString)
+      case _ => false
+    }
   }
 
   def findUserByUsername(username: String): Future[Option[User]] =
