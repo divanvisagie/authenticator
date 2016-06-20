@@ -23,7 +23,7 @@ class UserController @Inject()(userService: MyUserService)
     override def login = handle(Login) { args: Login.Args =>
       userService.login(
         User.fromUserRequest(args.user)
-      ).map { validUser =>
+      ).map { _ =>
         UserResponse(id = 0, username = args.user.username, "token-from-thrift")
       }
     }
