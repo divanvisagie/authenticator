@@ -4,7 +4,7 @@ import javax.inject.{Inject, Singleton}
 
 import com.swissguard.domain.User
 import com.swissguard.user.thriftscala.UserService.{CreateUser, ListUsers, Login, ValidateToken}
-import com.swissguard.user.thriftscala.UserService
+import com.swissguard.user.thriftscala.{UserResponse, UserService}
 import com.twitter.finatra.thrift.Controller
 import com.twitter.util.Future
 import com.swissguard.services.{UserService => MyUserService}
@@ -22,7 +22,7 @@ class UserController @Inject()(userService: MyUserService)
 
     override def login = handle(Login) { args: Login.Args =>
       userService.login(
-       User.fromUserRequest(args.user)
+        User.fromUserRequest(args.user)
       )
     }
 

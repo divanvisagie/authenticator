@@ -25,7 +25,9 @@ class LoginFeatureTest extends FeatureTest {
     "respond with nothing" in {
       client.login(
         UserRequest("bob", "sarah123")
-      ).onFailure( err => {
+      ).onSuccess{ _ =>
+        "" should be ("should have failed")
+      }.onFailure( err => {
         err.getMessage should be ("Invalid password")
       })
     }

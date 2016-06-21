@@ -24,18 +24,20 @@ class UserService @Inject()(userRepository: UserRepository) {
       password = user.password.bcrypt,
       username = user.username
     )
-    userRepository.createUser(safeUser).toTwitterFuture map { returnUser =>
-      User.toUserResponse(returnUser, "token-from-thrift")
+    userRepository.createUser(safeUser).toTwitterFuture map {
+      case Some(u: User) => User.toUserResponse(safeUser, "token-from-thrift")
+      case _ => throw new Exception("User exists")
     }
   }
 
-  def login(user: User): Future[UserResponse] = {
-
-    user.password match {
-      case password if password == "bobby123" => Future value responseUser
-      case _ => Future exception new Exception("Invalid password")
-    } //"password".isBcrypted("$2a$10$iXIfki6AefgcUsPqR.niQ.FvIK8vdcfup09YmUxmzS/sQeuI3QOFG")
-  }
+  def login(user: User): Future[UserResponse] =
+    userRepository.findByUsername(user.username).toTwitterFuture map[Boolean] {
+      case Some(u: User) => user.password.isBcrypted(u.password.toString)
+      case _ => false
+    } map { valid =>
+      if (!valid) throw new Exception("Invalid password")
+      UserResponse(id = 0, username = user.username, "token-from-thrift")
+    }
 
   def findUserByUsername(username: String): Future[Option[User]] =
     userRepository.findByUsername(username).toTwitterFuture
