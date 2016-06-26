@@ -1,6 +1,6 @@
 package com.swissguard.domain
 
-import com.swissguard.user.thriftscala.{AuthenticationRequest, UserRequest, UserResponse}
+import com.swissguard.user.thriftscala.{AuthenticationRequest, UserResponse}
 
 case class User(
   id: Int,
@@ -16,11 +16,11 @@ object User {
       password = authenticationRequest.password
     )
 
-  def fromUserRequest(userRequest: UserRequest) : User =
+  def fromUserRequest(authenticationRequest: AuthenticationRequest) : User =
     User(
       id = 0,
-      username = userRequest.username,
-      password = userRequest.password
+      username = authenticationRequest.username,
+      password = authenticationRequest.password
     )
 
   def toUserResponse(user: User, token: String = "") : UserResponse =
