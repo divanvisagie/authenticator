@@ -6,9 +6,9 @@ import com.twitter.finatra.thrift.ThriftServer
 import com.twitter.finatra.thrift.routing.ThriftRouter
 import com.twitter.finatra.thrift.filters._
 
-object SwissGuardServerMain extends ExampleServer
+object SwissGuardServerMain extends SwissGuardThriftServer
 
-class ExampleServer extends ThriftServer {
+class SwissGuardThriftServer extends ThriftServer {
   override val name = "swiss-guard"
 
   override def modules = Seq(DatabaseModule)

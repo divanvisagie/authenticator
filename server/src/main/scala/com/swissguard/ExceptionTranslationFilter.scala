@@ -1,6 +1,7 @@
 package com.swissguard
 
 import java.lang.Exception
+
 import com.twitter.finagle.{Service, TimeoutException}
 import com.twitter.finatra.thrift.thriftscala.ClientErrorCause.RequestTimeout
 import com.twitter.finatra.thrift.thriftscala.ServerErrorCause.InternalServerError
@@ -27,7 +28,9 @@ class ExceptionTranslationFilter
         Future.exception(
           ServerError(InternalServerError, e.getMessage))
       case e: Exception =>
-        Future.exception(e)
+        error("Unhandled exception", e)
+        Future.exception(
+          ServerError(InternalServerError, e.getMessage))
     }
   }
 }

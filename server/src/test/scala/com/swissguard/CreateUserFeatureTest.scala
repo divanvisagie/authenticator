@@ -1,27 +1,25 @@
 package com.swissguard
 
-import com.google.inject.testing.fieldbinder.Bind
-import com.swissguard.domain.User
-import com.swissguard.services.UserService
-import com.twitter.inject.Mockito
-import com.swissguard.user.thriftscala.{UserRequest, UserService => ThriftUserService}
+import com.swissguard.user.thriftscala.{AuthenticationRequest, UserService}
 import com.twitter.finatra.thrift.EmbeddedThriftServer
+import com.twitter.inject.Mockito
 import com.twitter.inject.server.FeatureTest
-import com.twitter.util.Future
+import com.twitter.util.{Await, Future}
 
 class CreateUserFeatureTest extends FeatureTest with Mockito {
 
-  override val server = new EmbeddedThriftServer(new ExampleServer)
+  override val server = new EmbeddedThriftServer(new SwissGuardThriftServer)
 
+  val userClient = server.thriftClient[UserService[Future]](clientId = "register")
+  "register user bob" should {
+    "throw user exists" in {
 
-  val userClient = server.thriftClient[ThriftUserService[Future]](clientId = "createClient")
-  "user service" should {
-    "respond to createUser failure for bob" in {
-      val user = userClient.createUser(
-        UserRequest("bob","bobby123")
-      ).onFailure( ex => {
-        ex.getMessage should be ("User exists")
-      })
+      the [Exception] thrownBy {
+        Await.result(userClient.register(
+          AuthenticationRequest("bob","bobby123")
+        ))
+      } should have message "User exists"
+
     }
   }
 }
