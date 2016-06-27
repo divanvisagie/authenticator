@@ -4,7 +4,7 @@ import sbt.Keys._
 parallelExecution in ThisBuild := false
 
 lazy val versions = new {
-  val finatra = "2.1.5"
+  val finatra = "2.1.6"
   val guice = "4.0"
   val logback = "1.0.13"
   val mockito = "1.9.5"
@@ -13,8 +13,6 @@ lazy val versions = new {
   val slick = "3.1.1"
   val bijection = "0.9.2"
 }
-
-
 
 lazy val baseSettings = Seq(
   version := "1.0.0-SNAPSHOT",

@@ -2,6 +2,7 @@ package com.swissguard
 
 import com.swissguard.controllers.UserController
 import com.swissguard.modules.DatabaseModule
+import com.twitter.finagle.ThriftMux
 import com.twitter.finatra.thrift.ThriftServer
 import com.twitter.finatra.thrift.routing.ThriftRouter
 import com.twitter.finatra.thrift.filters._
@@ -23,4 +24,9 @@ class SwissGuardThriftServer extends ThriftServer {
       .filter[ExceptionTranslationFilter]
       .add[UserController] //We can only have one in thrift
   }
+
+//  override def configureThriftServer(server: ThriftMux.Server): ThriftMux.Server = {
+//    server
+//
+//  }
 }
