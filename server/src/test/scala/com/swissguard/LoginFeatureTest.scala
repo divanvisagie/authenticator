@@ -12,6 +12,7 @@ class LoginFeatureTest extends FeatureTest with Mockito {
 
   val client = server.thriftClient[UserService[Future]](clientId = "login")
 
+
   "login with correct password" should {
     "respond with token" in {
       client.login(
