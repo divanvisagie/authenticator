@@ -15,7 +15,7 @@ class TestClientServer extends HttpServer {
 
   override def defaultFinatraHttpPort = ":8888"
 
-  override val adminPort = flag("admin.port", new InetSocketAddress(8880), "Admin Htto server port")
+  override val adminPort = flag("admin.port", new InetSocketAddress(8880), "Admin Http server port")
 
   override def configureHttp(router: HttpRouter) {
     router
