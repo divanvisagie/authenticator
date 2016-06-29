@@ -1,0 +1,28 @@
+{
+  "config": {
+    "target": "http://localhost:8888",
+    "phases": [
+      {
+        "duration": 60,
+        "arrivalRate": 5
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "Registration",
+      "flow": [
+        {
+          "post": {
+            "url": "/register",
+            "json": {
+              "username":"ellen_key",
+              "password":"education",
+              "email":"magnets@gmail.com"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

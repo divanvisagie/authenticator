@@ -30,3 +30,10 @@ class UserService {
   def registerUser(user: AuthenticationRequest) = client.register(user)
 
 }
+
+//http://localhost:8888/register
+//{
+//  "username": "joe",
+//  "password": "bobby123",
+//  "email": "lol"
+//}

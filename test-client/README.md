@@ -1,9 +1,7 @@
 # Test Client
 
-The test client was created as an interface for locust swarm testing
-
-
+Artillery load testing
 
 ```sh
-pip install locustio
+npm install -g artillery
 ```
