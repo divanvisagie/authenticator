@@ -3,7 +3,6 @@ package com.swissguard.repositories
 import javax.inject.Inject
 
 import com.swissguard.domain.User
-import slick.dbio.SuccessAction
 import slick.driver.PostgresDriver.api._
 
 import scala.concurrent.Future
@@ -24,8 +23,8 @@ class UserRepository @Inject()(db: Database) {
 
   def findByUsername(username: String): Future[Option[User]] =
     db.run {
-      users.filter(_.username === username).take(1).result
-    }.map(_.headOption)
+      users.filter(_.username === username).result.headOption
+    }
 
   def listUsers: Future[Seq[User]] =
     db.run {

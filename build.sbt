@@ -4,7 +4,7 @@ import sbt.Keys._
 parallelExecution in ThisBuild := false
 
 lazy val versions = new {
-  val finatra = "2.1.5"
+  val finatra = "2.1.6"
   val guice = "4.0"
   val logback = "1.0.13"
   val mockito = "1.9.5"
@@ -13,8 +13,6 @@ lazy val versions = new {
   val slick = "3.1.1"
   val bijection = "0.9.2"
 }
-
-
 
 lazy val baseSettings = Seq(
   version := "1.0.0-SNAPSHOT",
@@ -55,6 +53,45 @@ lazy val idl = (project in file("swiss-guard-idl")).
     )
   )
 
+lazy val client = (project in file("test-client")).
+  settings(baseSettings).
+  settings (
+    name := "test-client",
+    moduleName := "test-client",
+    libraryDependencies ++= Seq(
+
+      "org.scala-lang" % "scala-compiler" % scalaVersion.value,
+      "com.twitter" %% "finagle-core" % "6.34.0",
+      "com.twitter" % "finagle-thrift_2.11" % "6.34.0",
+      "org.apache.thrift" % "libthrift" % "0.9.0" % "compile",
+
+      "com.twitter.finatra" %% "finatra-http" % versions.finatra,
+      "com.twitter.finatra" %% "finatra-slf4j" % versions.finatra,
+      "ch.qos.logback" % "logback-classic" % versions.logback,
+      "ch.qos.logback" % "logback-classic" % versions.logback % "test",
+
+      "com.twitter.finatra" %% "finatra-http" % versions.finatra % "test",
+      "com.twitter.finatra" %% "finatra-jackson" % versions.finatra % "test",
+      "com.twitter.inject" %% "inject-server" % versions.finatra % "test",
+      "com.twitter.inject" %% "inject-app" % versions.finatra % "test",
+      "com.twitter.inject" %% "inject-core" % versions.finatra % "test",
+      "com.twitter.inject" %% "inject-modules" % versions.finatra % "test",
+      "com.google.inject.extensions" % "guice-testlib" % versions.guice % "test",
+
+      "com.twitter.finatra" %% "finatra-http" % versions.finatra % "test" classifier "tests",
+      "com.twitter.finatra" %% "finatra-jackson" % versions.finatra % "test" classifier "tests",
+      "com.twitter.inject" %% "inject-server" % versions.finatra % "test" classifier "tests",
+      "com.twitter.inject" %% "inject-app" % versions.finatra % "test" classifier "tests",
+      "com.twitter.inject" %% "inject-core" % versions.finatra % "test" classifier "tests",
+      "com.twitter.inject" %% "inject-modules" % versions.finatra % "test" classifier "tests",
+
+      "org.mockito" % "mockito-core" % versions.mockito % "test",
+      "org.scalatest" %% "scalatest" % versions.scalatest % "test",
+      "org.specs2" %% "specs2" % versions.specs2 % "test"
+    )
+
+  ).dependsOn(idl)
+
 lazy val server = (project in file("server")).
   enablePlugins(JavaServerAppPackaging).
   settings(baseSettings).
@@ -72,11 +109,9 @@ lazy val server = (project in file("server")).
       "ch.qos.logback" % "logback-classic" % versions.logback,
       "com.github.t3hnar" % "scala-bcrypt_2.11" % "2.6",
 
-      // postgres dependencies
       "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",
       "com.typesafe.slick" %% "slick" % versions.slick,
       "org.slf4j" % "slf4j-nop" % "1.6.4",
-      // end of that
 
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra % "test",
       "com.twitter.inject" %% "inject-app" % versions.finatra % "test",

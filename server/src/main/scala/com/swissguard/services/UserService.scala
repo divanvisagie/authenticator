@@ -12,35 +12,50 @@ import com.swissguard.user.thriftscala.UserResponse
 
 @Singleton
 class UserService @Inject()(userRepository: UserRepository) {
-  val responseUser = UserResponse(
-    id = 1,
-    username = "bob",
-    token = "token-from-thrift"
-  )
 
-  def createUser(user: User): Future[UserResponse] = {
+  private def createUser(user: User): Future[User] = {
     val safeUser = User(
       id = user.id ,
       password = user.password.bcrypt,
       username = user.username
     )
-    userRepository.createUser(safeUser).toTwitterFuture map {
-      case Some(u: User) => User.toUserResponse(safeUser, "token-from-thrift")
-      case _ => throw new Exception("User exists")
+    userRepository.createUser(safeUser).toTwitterFuture flatMap {
+      case None => Future.exception(new Exception("User exists"))
+      case Some(user: User) => Future.value(user)
     }
   }
 
-  def login(user: User): Future[UserResponse] =
-    userRepository.findByUsername(user.username).toTwitterFuture map[Boolean] {
-      case Some(u: User) => user.password.isBcrypted(u.password.toString)
-      case _ => false
-    } map { valid =>
-      if (!valid) throw new Exception("Invalid password")
-      UserResponse(id = 0, username = user.username, "token-from-thrift")
+  private def generateTokenForUser(user: User): Future[String] =
+    Future value "token-from-thrift"
+
+  private def authenticateUser(user: User,password: String): Future[String] = {
+    if (password.isBcrypted(user.password.toString)) generateTokenForUser(user)
+    else Future.exception(new Exception("Invalid password"))
+  }
+
+  def registerUser(user: User): Future[String] =
+    for {
+      u <- createUser(user)
+      token <- generateTokenForUser(u)
+    } yield {
+      token
     }
 
-  def findUserByUsername(username: String): Future[Option[User]] =
-    userRepository.findByUsername(username).toTwitterFuture
+
+  def login(user: User): Future[String] =
+    for {
+      u <- findUserByUsername(user.username)
+      token <- authenticateUser(u, user.password)
+    } yield {
+      token
+    }
+
+
+  private def findUserByUsername(username: String): Future[User] =
+    userRepository.findByUsername(username).toTwitterFuture flatMap {
+      case None => Future.exception(new Exception("User not found"))
+      case Some(user) => Future.value(user)
+    }
 
 
   def listUsers : Future[Seq[UserResponse]] =

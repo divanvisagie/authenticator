@@ -1,49 +1,50 @@
 package com.swissguard
 
-import com.google.inject.testing.fieldbinder.Bind
-import com.swissguard.user.thriftscala.{UserRequest, UserService}
+import com.swissguard.user.thriftscala.{AuthenticationRequest, UserService}
 import com.twitter.finatra.thrift.EmbeddedThriftServer
 import com.twitter.inject.Mockito
 import com.twitter.inject.server.FeatureTest
-import com.twitter.util._
+import com.twitter.util.{Await, Future}
 
-class LoginFeatureTest extends FeatureTest {
+class LoginFeatureTest extends FeatureTest with Mockito {
 
-  override val server = new EmbeddedThriftServer(new ExampleServer)
+  override val server = new EmbeddedThriftServer(new SwissGuardThriftServer)
 
-  val client = server.thriftClient[UserService[Future]](clientId = "loginClient")
+  val client = server.thriftClient[UserService[Future]](clientId = "login")
 
-  "user service" should {
-    "respond to login with token" in {
+
+  "login with correct password" should {
+    "respond with token" in {
       client.login(
-        UserRequest("bob","bobby123")
-      ).value.token should be ("token-from-thrift")
+        AuthenticationRequest("bob","bobby123")
+      ).value should be ("token-from-thrift")
     }
   }
 
-  "user service" should {
-    "respond with nothing" in {
-      client.login(
-        UserRequest("bob", "sarah123")
-      ).onSuccess{ _ =>
-        "" should be ("should have failed")
-      }.onFailure( err => {
-        err.getMessage should be ("Invalid password")
-      })
+  "login with incorrect password" should {
+    "throw Invalid password exception" in {
+
+      val thrown = the [Exception] thrownBy {
+        Await.result(client.login(
+          AuthenticationRequest("bob", "sarah123")
+        ))
+      }
+      thrown.toString should include ("Invalid password")
+    }
+  }
+
+  "login with incorrect username" should {
+    "throw invalid Username exception" in {
+      val thrown = the [Exception] thrownBy {
+        Await.result(client.login(
+          AuthenticationRequest("alan-nowhere", "wont-matter")
+        ))
+      }
+      thrown.toString should include ("User not found")
     }
   }
 }
 
-class UserListFeatureTest extends FeatureTest with Mockito {
-  override val server = new EmbeddedThriftServer(new ExampleServer)
 
-  val client = server.thriftClient[UserService[Future]](clientId = "loginClient")
-
-  "user service" should {
-    "respond with list > 0" in {
-      client.listUsers().value.toList.length should be > 0
-    }
-  }
-}
 
 
