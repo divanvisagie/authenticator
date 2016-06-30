@@ -38,6 +38,7 @@ class TestClientServer extends HttpServer {
     )
     server
         .withTracer(tracer)
+        .withLabel("test-client-server")
   }
 
 }
