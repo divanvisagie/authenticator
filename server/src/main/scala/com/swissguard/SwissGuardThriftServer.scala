@@ -35,8 +35,10 @@ class SwissGuardThriftServer extends ThriftServer {
       statsReceiver = receiver,
       sampleRate = 1.0f
     )
+
     server
        .withTracer(tracer)
+       .withLabel("swiss-guard-server")
 
   }
 }
