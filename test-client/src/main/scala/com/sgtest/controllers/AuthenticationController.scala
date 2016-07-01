@@ -16,4 +16,11 @@ class AuthenticationController @Inject()(userService: UserService)
     }
   }
 
+  post("/login") { request: RegisterUserRequest =>
+    userService.login(request.toThrift) handle {
+      case e: Exception => response.status(401)
+        response.unauthorized( e.getMessage)
+    }
+  }
+
 }

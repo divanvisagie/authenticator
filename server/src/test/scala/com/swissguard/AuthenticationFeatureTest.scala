@@ -13,7 +13,7 @@ class AuthenticationFeatureTest extends FeatureTest {
 
   "user service" should {
     "respond to validation with true" in {
-      client.validateToken("token-from-thrift")
+      client.validateToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJvYmEifQ.fQ2PO8HbCgGzmVoyM6RBrzXjYseUgv1VgpwWx9FCBxY")
         .value should be (true)
     }
   }

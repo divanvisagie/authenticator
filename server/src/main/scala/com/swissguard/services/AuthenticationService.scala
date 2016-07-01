@@ -11,7 +11,7 @@ import com.swissguard.user.thriftscala.UserResponse
 
 
 @Singleton
-class UserService @Inject()(userRepository: UserRepository, tokenService: TokenService) {
+class AuthenticationService @Inject()(userRepository: UserRepository, tokenService: TokenService) {
 
   private def createUser(user: User): Future[User] = {
     val safeUser = User(

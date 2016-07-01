@@ -36,7 +36,7 @@ class UserService {
     .newIface[TUserService.FutureIface]("localhost:9999")
 
   def registerUser(user: AuthenticationRequest) = client.register(user)
-
+  def login(user: AuthenticationRequest) = client.login(user)
 }
 
 //http://localhost:8888/register
