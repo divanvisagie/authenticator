@@ -11,7 +11,7 @@ import com.swissguard.user.thriftscala.UserResponse
 
 
 @Singleton
-class UserService @Inject()(userRepository: UserRepository) {
+class UserService @Inject()(userRepository: UserRepository, tokenService: TokenService) {
 
   private def createUser(user: User): Future[User] = {
     val safeUser = User(
@@ -25,8 +25,9 @@ class UserService @Inject()(userRepository: UserRepository) {
     }
   }
 
-  private def generateTokenForUser(user: User): Future[String] =
-    Future value "token-from-thrift"
+  private def generateTokenForUser(user: User): Future[String] = {
+    Future value tokenService.generateToken(user)
+  }
 
   private def authenticateUser(user: User,password: String): Future[String] = {
     if (password.isBcrypted(user.password.toString)) generateTokenForUser(user)

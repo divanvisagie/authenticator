@@ -9,6 +9,19 @@ case class User(
 ) {
 }
 object User {
+  def fromMap(userMap: Map[String, Any]): User =
+    User(
+      id = 0,
+      username = userMap.get("username").toString,
+      password = ""
+    )
+
+  def toMap(user: User): Map[String, Any] = {
+    Map(
+      "username" -> user.username
+    )
+  }
+
   def fromAuthenticationRequest(authenticationRequest: AuthenticationRequest): User =
     User(
       id = 0,
