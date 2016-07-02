@@ -113,6 +113,8 @@ lazy val server = (project in file("server")).
       "com.typesafe.slick" %% "slick" % versions.slick,
       "org.slf4j" % "slf4j-nop" % "1.6.4",
 
+      "com.jason-goodwin" %% "authentikat-jwt" % "0.4.1",
+
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra % "test",
       "com.twitter.inject" %% "inject-app" % versions.finatra % "test",
       "com.twitter.inject" %% "inject-core" % versions.finatra % "test",

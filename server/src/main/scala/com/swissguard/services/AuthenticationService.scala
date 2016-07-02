@@ -11,7 +11,7 @@ import com.swissguard.user.thriftscala.UserResponse
 
 
 @Singleton
-class UserService @Inject()(userRepository: UserRepository) {
+class AuthenticationService @Inject()(userRepository: UserRepository, tokenService: TokenService) {
 
   private def createUser(user: User): Future[User] = {
     val safeUser = User(
@@ -25,8 +25,17 @@ class UserService @Inject()(userRepository: UserRepository) {
     }
   }
 
-  private def generateTokenForUser(user: User): Future[String] =
-    Future value "token-from-thrift"
+  def validate(token: String): Future[Boolean] = {
+    Future value tokenService.validate(token)
+  }
+
+  private def generateTokenForUser(user: User): Future[String] = {
+    Future value tokenService.generateToken(
+      Map(
+        "username" -> user.username
+      )
+    )
+  }
 
   private def authenticateUser(user: User,password: String): Future[String] = {
     if (password.isBcrypted(user.password.toString)) generateTokenForUser(user)
@@ -50,13 +59,11 @@ class UserService @Inject()(userRepository: UserRepository) {
       token
     }
 
-
   private def findUserByUsername(username: String): Future[User] =
     userRepository.findByUsername(username).toTwitterFuture flatMap {
       case None => Future.exception(new Exception("User not found"))
       case Some(user) => Future.value(user)
     }
-
 
   def listUsers : Future[Seq[UserResponse]] =
     userRepository.listUsers.toTwitterFuture map { userList =>

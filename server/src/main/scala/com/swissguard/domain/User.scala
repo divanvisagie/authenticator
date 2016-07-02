@@ -9,6 +9,7 @@ case class User(
 ) {
 }
 object User {
+
   def fromAuthenticationRequest(authenticationRequest: AuthenticationRequest): User =
     User(
       id = 0,
@@ -29,6 +30,5 @@ object User {
       token = token,
       id = user.id
     )
-
 
 }

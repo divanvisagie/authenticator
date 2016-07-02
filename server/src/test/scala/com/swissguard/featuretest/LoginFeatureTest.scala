@@ -1,5 +1,6 @@
-package com.swissguard
+package com.swissguard.featuretest
 
+import com.swissguard.SwissGuardThriftServer
 import com.swissguard.user.thriftscala.{AuthenticationRequest, UserService}
 import com.twitter.finatra.thrift.EmbeddedThriftServer
 import com.twitter.inject.Mockito
@@ -17,7 +18,7 @@ class LoginFeatureTest extends FeatureTest with Mockito {
     "respond with token" in {
       client.login(
         AuthenticationRequest("bob","bobby123")
-      ).value should be ("token-from-thrift")
+      ).value.length should be > 20
     }
   }
 

@@ -1,7 +1,7 @@
 package com.swissguard
 
 import com.swissguard.controllers.UserController
-import com.swissguard.modules.DatabaseModule
+import com.swissguard.modules.{DatabaseModule, TokenServiceModule}
 import com.twitter.finagle.ThriftMux
 import com.twitter.finagle.stats.DefaultStatsReceiver
 import com.twitter.finagle.zipkin.thrift.ZipkinTracer
@@ -14,7 +14,7 @@ object SwissGuardServerMain extends SwissGuardThriftServer
 class SwissGuardThriftServer extends ThriftServer {
   override val name = "swiss-guard"
 
-  override def modules = Seq(DatabaseModule)
+  override def modules = Seq(DatabaseModule,TokenServiceModule)
 
   override def configureThrift(router: ThriftRouter) {
     router

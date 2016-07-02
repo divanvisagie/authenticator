@@ -52,8 +52,6 @@ class UserRepository @Inject()(db: Database) {
       case u: User => Option(u)
       case None => None
     }
-
   }
-
 }
 
