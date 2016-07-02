@@ -29,9 +29,11 @@ class SwissGuardThriftServer extends ThriftServer {
 
   override def configureThriftServer(server: ThriftMux.Server): ThriftMux.Server = {
     val receiver = DefaultStatsReceiver.get
+    val zipkinHost = sys.env.getOrElse("SG_ZIPKIN_HOST","localhost")
+    val zipkinPort = sys.env.getOrElse("SG_ZIPKIN_PORT", "9410").toInt
     val tracer = ZipkinTracer.mk(
-      host = "localhost",
-      port = 9410,
+      host = zipkinHost,
+      port = zipkinPort,
       statsReceiver = receiver,
       sampleRate = 1.0f
     )
