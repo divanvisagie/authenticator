@@ -25,13 +25,9 @@ class AuthenticationService @Inject()(userRepository: UserRepository, tokenServi
     }
   }
 
-
-  //  def userForToken(token: String): Option[User] = {
-  //    val claims = getClaimsForToken(token).getOrElse {
-  //       return None
-  //    }
-  //    Option(User.fromMap(claims))
-  //  }
+  def validate(token: String): Future[Boolean] = {
+    Future value tokenService.validate(token)
+  }
 
   private def generateTokenForUser(user: User): Future[String] = {
     Future value tokenService.generateToken(
@@ -63,13 +59,11 @@ class AuthenticationService @Inject()(userRepository: UserRepository, tokenServi
       token
     }
 
-
   private def findUserByUsername(username: String): Future[User] =
     userRepository.findByUsername(username).toTwitterFuture flatMap {
       case None => Future.exception(new Exception("User not found"))
       case Some(user) => Future.value(user)
     }
-
 
   def listUsers : Future[Seq[UserResponse]] =
     userRepository.listUsers.toTwitterFuture map { userList =>

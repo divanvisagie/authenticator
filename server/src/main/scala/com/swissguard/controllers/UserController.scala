@@ -3,14 +3,13 @@ package com.swissguard.controllers
 import javax.inject.{Inject, Singleton}
 
 import com.swissguard.domain.User
-import com.swissguard.services.{AuthenticationService, TokenService}
+import com.swissguard.services.AuthenticationService
 import com.swissguard.user.thriftscala.UserService
 import com.swissguard.user.thriftscala.UserService.{ListUsers, Login, Register, ValidateToken}
 import com.twitter.finatra.thrift.Controller
-import com.twitter.util.Future
 
 @Singleton
-class UserController @Inject()(authenticationService: AuthenticationService, tokenService: TokenService)
+class UserController @Inject()(authenticationService: AuthenticationService)
   extends Controller
   with UserService.BaseServiceIface {
 
@@ -27,7 +26,7 @@ class UserController @Inject()(authenticationService: AuthenticationService, tok
     }
 
     override def validateToken = handle(ValidateToken) { args: ValidateToken.Args =>
-      Future value tokenService.validate(args.token)
+      authenticationService.validate(args.token)
     }
 
     override def listUsers = handle(ListUsers) { args: ListUsers.Args =>
