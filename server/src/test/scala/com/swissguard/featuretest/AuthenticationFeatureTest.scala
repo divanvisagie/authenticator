@@ -1,5 +1,6 @@
-package com.swissguard
+package com.swissguard.featuretest
 
+import com.swissguard.SwissGuardThriftServer
 import com.swissguard.user.thriftscala.UserService
 import com.twitter.finatra.thrift.EmbeddedThriftServer
 import com.twitter.inject.server.FeatureTest

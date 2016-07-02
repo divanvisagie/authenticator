@@ -25,8 +25,20 @@ class AuthenticationService @Inject()(userRepository: UserRepository, tokenServi
     }
   }
 
+
+  //  def userForToken(token: String): Option[User] = {
+  //    val claims = getClaimsForToken(token).getOrElse {
+  //       return None
+  //    }
+  //    Option(User.fromMap(claims))
+  //  }
+
   private def generateTokenForUser(user: User): Future[String] = {
-    Future value tokenService.generateToken(user)
+    Future value tokenService.generateToken(
+      Map(
+        "username" -> user.username
+      )
+    )
   }
 
   private def authenticateUser(user: User,password: String): Future[String] = {
