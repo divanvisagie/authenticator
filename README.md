@@ -32,9 +32,16 @@ SG_PG_PASSWORD | Postgres database password | postgres
 
 #### Tokens
 
-Name            | Description                | Default
---------------- | -------------------------- | -------
+Name            | Description                    | Default
+--------------- | ------------------------------ | -------
 SG_TOKEN_SECRET | Secret used to sign jwt tokens | magnets
+
+#### Zipkin
+
+Name           | Description         | Default
+-------------- | ------------------- | ---------
+SG_ZIPKIN_HOST | Hostname for Zipkin | localhost
+SG_ZIPKIN_PORT | Port for Zipkin     | 9410
 
 ## License
 
