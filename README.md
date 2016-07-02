@@ -4,6 +4,8 @@
 
 A Finatra Thrift server application for users and authentication.
 
+![Swiss Guard Flag](./documentation/regimental_flag.jpg)
+
 ## Running
 
 ### Migrations
