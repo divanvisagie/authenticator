@@ -16,7 +16,7 @@ class TokenService(secret: String) {
   def validate(token: String): Boolean =
     JsonWebToken.validate(token, secret)
 
-  def getPayloadForToken(token: String): Option[Map[String, Any]] = token match {
+  def getPayloadForToken(token: String): Option[Map[String, String]] = token match {
     case JsonWebToken(header, claimsSet, signature) =>
       claimsSet.asSimpleMap.toOption
     case x =>
