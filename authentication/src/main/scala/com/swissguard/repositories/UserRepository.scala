@@ -16,7 +16,8 @@ class UserRepository @Inject()(db: Database) {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def username = column[String]("username")
     def password = column[String]("password_hash")
-    def * = (id, username, password) <> ((User.apply _).tupled, User.unapply)
+    def email = column[String]("email")
+    def * = (id, username, password, email) <> ((User.apply _).tupled, User.unapply)
   }
 
   private val users = TableQuery[UserTable]
@@ -40,11 +41,12 @@ class UserRepository @Inject()(db: Database) {
         (users returning users.map(_.id)) += User(
           id = 0,
           password = user.password,
-          username = user.username
+          username = user.username,
+          email = user.email
         )
 
         val newUser = userId.map { id =>
-          User(id,user.username,"")
+          User(id,user.username,"","")
         }
         newUser
     }.transactionally

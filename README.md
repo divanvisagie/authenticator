@@ -11,7 +11,7 @@ A Finatra Thrift server application for users and authentication.
 ### Migrations
 
 ```sh
-sbt server/flywayMigrate
+sbt auth/flywayMigrate
 ```
 
 ### Update Submodules

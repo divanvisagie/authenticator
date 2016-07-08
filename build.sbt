@@ -38,7 +38,7 @@ lazy val root = (project in file(".")).
   ).
   aggregate(
     idl,
-    server)
+    auth)
 
 lazy val idl = (project in file("swiss-guard-idl")).
   settings(baseSettings).
@@ -92,7 +92,7 @@ lazy val client = (project in file("test-client")).
 
   ).dependsOn(idl)
 
-lazy val server = (project in file("server")).
+lazy val auth = (project in file("authentication")).
   enablePlugins(JavaServerAppPackaging).
   settings(baseSettings).
   settings(

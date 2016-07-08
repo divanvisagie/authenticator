@@ -2,26 +2,26 @@ package com.swissguard.controllers
 
 import javax.inject.{Inject, Singleton}
 
+import com.swissguard.authentication.thriftscala.{AuthenticationService => TAuthenticationService}
 import com.swissguard.domain.User
 import com.swissguard.services.AuthenticationService
-import com.swissguard.user.thriftscala.UserService
-import com.swissguard.user.thriftscala.UserService.{ListUsers, Login, Register, ValidateToken}
+import com.swissguard.authentication.thriftscala.AuthenticationService.{ClaimsForToken, Login, Register, ValidateToken}
 import com.twitter.finatra.thrift.Controller
 
 @Singleton
 class UserController @Inject()(authenticationService: AuthenticationService)
   extends Controller
-  with UserService.BaseServiceIface {
+  with TAuthenticationService.BaseServiceIface {
 
     override val register = handle(Register) { args: Register.Args =>
       authenticationService.registerUser(
-        User.fromAuthenticationRequest(args.user)
+        User.fromRegistrationRequest(args.registrationRequest)
       )
     }
 
     override def login = handle(Login) { args: Login.Args =>
       authenticationService.login(
-        User.fromAuthenticationRequest(args.user)
+        User.fromLoginRequest(args.loginRequest)
       )
     }
 
@@ -29,7 +29,7 @@ class UserController @Inject()(authenticationService: AuthenticationService)
       authenticationService.validate(args.token)
     }
 
-    override def listUsers = handle(ListUsers) { args: ListUsers.Args =>
-      authenticationService.listUsers
+    override def claimsForToken = handle(ClaimsForToken) { args: ClaimsForToken.Args =>
+      authenticationService.claimsForToken(args.token)
     }
 }
