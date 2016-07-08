@@ -9,7 +9,7 @@ import com.swissguard.authentication.thriftscala.AuthenticationService.{ClaimsFo
 import com.twitter.finatra.thrift.Controller
 
 @Singleton
-class UserController @Inject()(authenticationService: AuthenticationService)
+class AuthenticationController @Inject()(authenticationService: AuthenticationService)
   extends Controller
   with TAuthenticationService.BaseServiceIface {
 

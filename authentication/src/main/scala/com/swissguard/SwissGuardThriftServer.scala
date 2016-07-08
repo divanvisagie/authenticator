@@ -1,6 +1,6 @@
 package com.swissguard
 
-import com.swissguard.controllers.UserController
+import com.swissguard.controllers.AuthenticationController
 import com.swissguard.modules.{DatabaseModule, TokenServiceModule}
 import com.twitter.finagle.ThriftMux
 import com.twitter.finagle.stats.DefaultStatsReceiver
@@ -24,7 +24,7 @@ class SwissGuardThriftServer extends ThriftServer {
       .filter[AccessLoggingFilter]
       .filter[StatsFilter]
       .filter[ExceptionTranslationFilter]
-      .add[UserController] //We can only have one in thrift
+      .add[AuthenticationController] //We can only have one in thrift
   }
 
   override def configureThriftServer(server: ThriftMux.Server): ThriftMux.Server = {
