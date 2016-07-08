@@ -34,8 +34,7 @@ class SwissGuardThriftServer extends ThriftServer {
     val tracer = ZipkinTracer.mk(
       host = zipkinHost,
       port = zipkinPort,
-      statsReceiver = receiver,
-      sampleRate = 1.0f
+      statsReceiver = receiver
     )
 
     server
