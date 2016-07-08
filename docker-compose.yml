@@ -1,23 +1,23 @@
 version: '2'
 services:
-  postgres:
-    image: postgres:latest
+  mysql:
+    image: mysql:5.7.13
     environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
-        - POSTGRES_DB=swissguard
+        - MYSQL_ROOT_PASSWORD=mysql
+        - MYSQL_USER=mysql
+        - MYSQL_DATABASE=swissguard
     ports:
       - "54321:5432"
 
   storage:
-      image: openzipkin/zipkin-cassandra:1.1.5
-      container_name: cassandra
-      ports:
-        - 9042:9042
+    image: openzipkin/zipkin-cassandra:1.2.1
+    container_name: cassandra
+    ports:
+      - 9042:9042
   # The zipkin process services the UI, and also exposes a POST endpoint that
   # instrumentation can send trace data to. Scribe is enabled by default.
   zipkin:
-    image: openzipkin/zipkin:1.1.5
+    image: openzipkin/zipkin:1.2.1
     container_name: zipkin
     environment:
       - STORAGE_TYPE=cassandra
