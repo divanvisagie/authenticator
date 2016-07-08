@@ -12,6 +12,7 @@ lazy val versions = new {
   val specs2 = "2.3.12"
   val slick = "3.1.1"
   val bijection = "0.9.2"
+  val finagle = "6.34.0"
 }
 
 lazy val baseSettings = Seq(
@@ -61,8 +62,8 @@ lazy val client = (project in file("test-client")).
     libraryDependencies ++= Seq(
 
       "org.scala-lang" % "scala-compiler" % scalaVersion.value,
-      "com.twitter" %% "finagle-core" % "6.34.0",
-      "com.twitter" % "finagle-thrift_2.11" % "6.34.0",
+      "com.twitter" %% "finagle-core" % versions.finagle,
+      "com.twitter" % "finagle-thrift_2.11" % versions.finagle,
       "org.apache.thrift" % "libthrift" % "0.9.0" % "compile",
 
       "com.twitter.finatra" %% "finatra-http" % versions.finatra,
@@ -113,7 +114,10 @@ lazy val auth = (project in file("authentication")).
       "com.typesafe.slick" %% "slick" % versions.slick,
       "org.slf4j" % "slf4j-nop" % "1.6.4",
 
+
       "com.jason-goodwin" %% "authentikat-jwt" % "0.4.1",
+      "com.twitter" %% "finagle-mysql" % versions.finagle,
+
 
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra % "test",
       "com.twitter.inject" %% "inject-app" % versions.finatra % "test",

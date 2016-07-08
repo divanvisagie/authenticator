@@ -7,30 +7,30 @@ services:
         - MYSQL_USER=mysql
         - MYSQL_DATABASE=swissguard
     ports:
-      - "54321:5432"
+        - "33061:3306"
 
-  storage:
-    image: openzipkin/zipkin-cassandra:1.2.1
-    container_name: cassandra
-    ports:
-      - 9042:9042
-  # The zipkin process services the UI, and also exposes a POST endpoint that
-  # instrumentation can send trace data to. Scribe is enabled by default.
-  zipkin:
-    image: openzipkin/zipkin:1.2.1
-    container_name: zipkin
-    environment:
-      - STORAGE_TYPE=cassandra
-      # When overriding this value, note the minimum supported version is 2.2
-      - CASSANDRA_CONTACT_POINTS=cassandra
-      # Uncomment to disable self-tracing
-      # - SELF_TRACING_ENABLED=false
-    ports:
-      # Listen port for the Scribe transport
-      - 9410:9410
-      # Historical port used for the Zipkin HTTP Api
-      - 9411:9411
-      # Zipkin UI used to be on a separate process listening on port 8080
-      - 8080:9411
-    depends_on:
-      - storage
+#  storage:
+#    image: openzipkin/zipkin-cassandra:1.2.1
+#    container_name: cassandra
+#    ports:
+#      - 9042:9042
+#  # The zipkin process services the UI, and also exposes a POST endpoint that
+#  # instrumentation can send trace data to. Scribe is enabled by default.
+#  zipkin:
+#    image: openzipkin/zipkin:1.2.1
+#    container_name: zipkin
+#    environment:
+#      - STORAGE_TYPE=cassandra
+#      # When overriding this value, note the minimum supported version is 2.2
+#      - CASSANDRA_CONTACT_POINTS=cassandra
+#      # Uncomment to disable self-tracing
+#      # - SELF_TRACING_ENABLED=false
+#    ports:
+#      # Listen port for the Scribe transport
+#      - 9410:9410
+#      # Historical port used for the Zipkin HTTP Api
+#      - 9411:9411
+#      # Zipkin UI used to be on a separate process listening on port 8080
+#      - 8080:9411
+#    depends_on:
+#      - storage
