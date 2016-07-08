@@ -1,7 +1,7 @@
 package com.swissguard.featuretest
 
 import com.swissguard.SwissGuardThriftServer
-import com.swissguard.user.thriftscala.UserService
+import com.swissguard.authentication.thriftscala.AuthenticationService
 import com.twitter.finatra.thrift.EmbeddedThriftServer
 import com.twitter.inject.server.FeatureTest
 import com.twitter.util.Future
@@ -10,7 +10,7 @@ class AuthenticationFeatureTest extends FeatureTest {
 
   override val server = new EmbeddedThriftServer(new SwissGuardThriftServer)
 
-  val client = server.thriftClient[UserService[Future]](clientId = "loginClient")
+  val client = server.thriftClient[AuthenticationService[Future]](clientId = "loginClient")
 
   "user service" should {
     "respond to validation with true" in {

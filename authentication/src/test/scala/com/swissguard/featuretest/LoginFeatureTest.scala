@@ -1,7 +1,7 @@
 package com.swissguard.featuretest
 
 import com.swissguard.SwissGuardThriftServer
-import com.swissguard.user.thriftscala.{AuthenticationRequest, UserService}
+import com.swissguard.authentication.thriftscala.{AuthenticationService, LoginRequest}
 import com.twitter.finatra.thrift.EmbeddedThriftServer
 import com.twitter.inject.Mockito
 import com.twitter.inject.server.FeatureTest
@@ -11,13 +11,13 @@ class LoginFeatureTest extends FeatureTest with Mockito {
 
   override val server = new EmbeddedThriftServer(new SwissGuardThriftServer)
 
-  val client = server.thriftClient[UserService[Future]](clientId = "login")
+  val client = server.thriftClient[AuthenticationService[Future]](clientId = "login")
 
 
   "login with correct password" should {
     "respond with token" in {
       client.login(
-        AuthenticationRequest("bob","bobby123")
+        LoginRequest("bob","bobby123")
       ).value.length should be > 20
     }
   }
@@ -27,7 +27,7 @@ class LoginFeatureTest extends FeatureTest with Mockito {
 
       val thrown = the [Exception] thrownBy {
         Await.result(client.login(
-          AuthenticationRequest("bob", "sarah123")
+          LoginRequest("bob", "sarah123")
         ))
       }
       thrown.toString should include ("Invalid password")
@@ -38,7 +38,7 @@ class LoginFeatureTest extends FeatureTest with Mockito {
     "throw invalid Username exception" in {
       val thrown = the [Exception] thrownBy {
         Await.result(client.login(
-          AuthenticationRequest("alan-nowhere", "wont-matter")
+          LoginRequest("alan-nowhere", "wont-matter")
         ))
       }
       thrown.toString should include ("User not found")
