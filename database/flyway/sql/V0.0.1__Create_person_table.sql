@@ -1,15 +1,14 @@
 CREATE TABLE users
 (
-  id bigserial NOT NULL,
-  username character varying,
-  password_hash character varying,
-  email character varying,
-  CONSTRAINT pk PRIMARY KEY (id),
-  CONSTRAINT un UNIQUE(username),
-  CONSTRAINT em UNIQUE(email)
+  id bigserial primary key,
+  username text not null unique,
+  password text null,
+  email text not null unique
 );
 
-insert into users(username,email, password_hash)
+
+
+insert into users(username,email, password)
 values (
     'bob',
     'bob@sg.com',
@@ -17,3 +16,16 @@ values (
 );
 
 
+CREATE FUNCTION signup()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+DECLARE
+  vcompany_id int;
+BEGIN
+  INSERT INTO users (username, password, email) VALUES (new.user_name, new.pass, vcompany_id);
+RETURN new;
+END;
+
+
+select * from users
