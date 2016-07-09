@@ -54,6 +54,12 @@ class UserRepository @Inject()(client:  Service[Request,Response]) {
   }
 
   def createUser(user: User) : Future[Option[User]] = {
+    val request = createPostRequestWithQuery(
+      s"/users"
+    )
+    client(request) map { response =>
+
+    }
     Future exception  new Exception("Not Implemented")
   }
 }
