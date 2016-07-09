@@ -1,9 +1,8 @@
-package com.swissguard.services
+package com.swissguard.tokenizer
 
 import authentikat.jwt.{JsonWebToken, JwtClaimsSet, JwtHeader}
 
-class TokenService(secret: String) {
-
+class Tokenizer(secret: String) {
 
   def generateToken(payload: Map[String, Any]): String = {
     val header = JwtHeader("HS256")

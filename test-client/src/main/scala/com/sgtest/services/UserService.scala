@@ -2,7 +2,7 @@ package com.sgtest.services
 
 import javax.inject.Singleton
 
-import com.swissguard.user.thriftscala.{AuthenticationRequest, UserService => TUserService}
+import com.swissguard.authentication.thriftscala.{AuthenticationRequest, UserService => TUserService}
 import com.twitter.finagle._
 import com.twitter.finagle.service.RetryBudget
 import com.twitter.finagle.stats.{DefaultStatsReceiver, NullStatsReceiver}
