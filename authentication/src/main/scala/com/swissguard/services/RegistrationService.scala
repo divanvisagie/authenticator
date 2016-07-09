@@ -1,14 +1,12 @@
 package com.swissguard.services
 
 import javax.inject.Inject
-
 import com.swissguard.domain.User
 import com.swissguard.repositories.UserRepository
 import com.twitter.util.Future
 import com.github.t3hnar.bcrypt._
 
 class RegistrationService @Inject()(userRepository: UserRepository) {
-
 
   def registerUser(user: User): Future[Boolean] = {
     val safeUser = User(

@@ -23,6 +23,15 @@ class UserRepository @Inject()(client:  Service[Request,Response]) {
       query
     )
 
+  private def createPostRequestWithQuery(query: String) = {
+    Request(
+      Version.Http11,
+      Method.Post,
+      query
+    )
+  }
+
+  case class UserTable(id: Int, username: String, password_hash: String ,email: String)
 
   def findByUsername(username: String): Future[Option[User]] = {
     val request = createGetRequestWithQuery(
@@ -30,8 +39,17 @@ class UserRepository @Inject()(client:  Service[Request,Response]) {
     )
     client(request) map { response =>
       val contentJson = response.getContentString()
-      val user = mapper.readValue(contentJson, classOf[User])
-      Option(user)
+      val users = mapper.readValue(contentJson, classOf[List[Map[String,_]]])
+      users.headOption
+    } map {
+      case Some(headOption) =>
+        Option(User(
+          id = headOption("id").toString.toInt,
+          username = headOption("username").toString,
+          password = headOption("password_hash").toString,
+          email = headOption("email").toString
+        ))
+      case None => None
     }
   }
 
