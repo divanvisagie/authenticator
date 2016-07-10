@@ -112,6 +112,8 @@ lazy val auth = (project in file("authentication")).
       "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",
       "com.typesafe.slick" %% "slick" % versions.slick,
       "org.slf4j" % "slf4j-nop" % "1.6.4",
+      "com.typesafe.akka" %% "akka-actor" % "2.4.8",
+
 
       "com.jason-goodwin" %% "authentikat-jwt" % "0.4.1",
 

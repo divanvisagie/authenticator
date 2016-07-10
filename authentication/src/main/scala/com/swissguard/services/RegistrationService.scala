@@ -1,12 +1,17 @@
 package com.swissguard.services
 
 import javax.inject.Inject
+
 import com.swissguard.domain.User
 import com.swissguard.repositories.UserRepository
 import com.twitter.util.Future
 import com.github.t3hnar.bcrypt._
+import com.google.inject.Singleton
+import akka.actor.{Actor, Props}
+import akka.event.Logging
 
-class RegistrationService @Inject()(userRepository: UserRepository) {
+@Singleton
+class RegistrationService @Inject()(userRepository: UserRepository,emailService: EmailService) {
 
   def registerUser(user: User): Future[Boolean] = {
     val safeUser = User(
@@ -17,7 +22,9 @@ class RegistrationService @Inject()(userRepository: UserRepository) {
     )
     userRepository.createUser(safeUser) flatMap {
       case None => Future.exception(new Exception("User exists"))
-      case Some(user: User) => Future.value(true)
+      case Some(user: User) =>
+        emailService.sendSignupEmailToUser(user)
+        Future.value(true)
     }
   }
 }
