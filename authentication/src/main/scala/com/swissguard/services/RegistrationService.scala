@@ -10,7 +10,7 @@ class RegistrationService @Inject()(userRepository: UserRepository) {
 
   def registerUser(user: User): Future[Boolean] = {
     val safeUser = User(
-      id = user.id ,
+      id = user.id,
       password = user.password.bcrypt,
       username = user.username,
       email = ""

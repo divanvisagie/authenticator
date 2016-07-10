@@ -22,8 +22,7 @@ lazy val baseSettings = Seq(
   libraryDependencies ++= Seq(
     "org.mockito" % "mockito-core" % versions.mockito % "test",
     "org.scalatest" %% "scalatest" % versions.scalatest % "test",
-    "org.specs2" %% "specs2" % versions.specs2 % "test",
-    "mysql" % "mysql-connector-java" % "6.0.3"
+    "org.specs2" %% "specs2" % versions.specs2 % "test"
   ),
   resolvers ++= Seq(
     Resolver.sonatypeRepo("releases"),
@@ -110,12 +109,12 @@ lazy val auth = (project in file("authentication")).
       "ch.qos.logback" % "logback-classic" % versions.logback,
       "com.github.t3hnar" % "scala-bcrypt_2.11" % "2.6",
 
+      "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",
       "com.typesafe.slick" %% "slick" % versions.slick,
       "org.slf4j" % "slf4j-nop" % "1.6.4",
 
       "com.jason-goodwin" %% "authentikat-jwt" % "0.4.1",
-      "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",
-      "com.twitter" %% "finagle-mysql" % versions.finagle,
+
 
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra % "test",
       "com.twitter.inject" %% "inject-app" % versions.finatra % "test",

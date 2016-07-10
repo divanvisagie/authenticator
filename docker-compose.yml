@@ -8,50 +8,37 @@ networks:
    backend:
 
 services:
-  restheart:
-    image: softinstigate/restheart:latest
+  postgres:
+     image: postgres:latest
+     environment:
+         - POSTGRES_USER=postgres
+         - POSTGRES_PASSWORD=postgres
+         - POSTGRES_DB=swissguard
+     ports:
+       - "54321:5432"
+
+  storage:
+    image: openzipkin/zipkin-cassandra:1.2.1
+    container_name: cassandra
+    ports:
+      - 9042:9042
+  # The zipkin process services the UI, and also exposes a POST endpoint that
+  # instrumentation can send trace data to. Scribe is enabled by default.
+  zipkin:
+    image: openzipkin/zipkin:1.2.1
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=cassandra
+      # When overriding this value, note the minimum supported version is 2.2
+      - CASSANDRA_CONTACT_POINTS=cassandra
+      # Uncomment to disable self-tracing
+      # - SELF_TRACING_ENABLED=false
+    ports:
+      # Listen port for the Scribe transport
+      - 9410:9410
+      # Historical port used for the Zipkin HTTP Api
+      - 9411:9411
+      # Zipkin UI used to be on a separate process listening on port 8080
+      - 8080:9411
     depends_on:
-     - mongodb
-    networks:
-     - backend
-    ports:
-       - "8080:8080"
-    ### Uncoment below if you want to mount a local configuration folder
-    ### to overwrite default restheart.yml and/or security.yml
-    #volumes:
-    #   - "$PWD"/etc:/opt/restheart/etc:ro
-
-  mongodb:
-    image: mongo:3.2
-    volumes:
-      - ./volumes:/data/db
-    networks:
-      - backend
-    ports:
-      - "27017:27017"
-
-#  storage:
-#    image: openzipkin/zipkin-cassandra:1.2.1
-#    container_name: cassandra
-#    ports:
-#      - 9042:9042
-#  # The zipkin process services the UI, and also exposes a POST endpoint that
-#  # instrumentation can send trace data to. Scribe is enabled by default.
-#  zipkin:
-#    image: openzipkin/zipkin:1.2.1
-#    container_name: zipkin
-#    environment:
-#      - STORAGE_TYPE=cassandra
-#      # When overriding this value, note the minimum supported version is 2.2
-#      - CASSANDRA_CONTACT_POINTS=cassandra
-#      # Uncomment to disable self-tracing
-#      # - SELF_TRACING_ENABLED=false
-#    ports:
-#      # Listen port for the Scribe transport
-#      - 9410:9410
-#      # Historical port used for the Zipkin HTTP Api
-#      - 9411:9411
-#      # Zipkin UI used to be on a separate process listening on port 8080
-#      - 8080:9411
-#    depends_on:
-#      - storage
+      - storage

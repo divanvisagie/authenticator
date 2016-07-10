@@ -2,65 +2,61 @@ package com.swissguard.repositories
 
 import javax.inject.Inject
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import com.twitter.finagle.http._
-import com.twitter.finagle.Service
 import com.swissguard.domain.User
-import com.twitter.finagle.exp.mysql.{Client, IntValue, StringValue}
-import com.twitter.util.Future
+import slick.driver.PostgresDriver.api._
 
+import com.github.ikhoon.TwitterFutureOps._
+import com.github.t3hnar.bcrypt._
+
+import scala.concurrent.Future
+import com.twitter.util.{ Future => TwitterFuture }
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class UserRepository @Inject()(client:  Service[Request,Response]) {
-  val mapper = new ObjectMapper()
-  mapper.registerModule(DefaultScalaModule)
+class UserRepository @Inject()(db: Database) {
 
-  private def createGetRequestWithQuery(query: String) =
-    Request(
-      Version.Http11,
-      Method.Get,
-      query
-    )
+  implicit val session: Session = db.createSession()
 
-  private def createPostRequestWithQuery(query: String) = {
-    Request(
-      Version.Http11,
-      Method.Post,
-      query
-    )
+  private class UserTable(tag: Tag) extends Table[User](tag, "users"){
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    def username = column[String]("username")
+    def password = column[String]("password")
+    def email = column[String]("email")
+    def * = (id, username, password, email) <> ((User.apply _).tupled, User.unapply)
   }
 
-  case class UserTable(id: Int, username: String, password_hash: String ,email: String)
+  private val users = TableQuery[UserTable]
 
-  def findByUsername(username: String): Future[Option[User]] = {
-    val request = createGetRequestWithQuery(
-      s"/users?username=eq.$username"
-    )
-    client(request) map { response =>
-      val contentJson = response.getContentString()
-      val users = mapper.readValue(contentJson, classOf[List[Map[String,_]]])
-      users.headOption
-    } map {
-      case Some(headOption) =>
-        Option(User(
-          id = headOption("id").toString.toInt,
-          username = headOption("username").toString,
-          password = headOption("password_hash").toString,
-          email = headOption("email").toString
-        ))
+  def findByUsername(username: String): TwitterFuture[Option[User]] =
+    db.run {
+      users.filter(_.username === username).result.headOption
+    }.toTwitterFuture
+
+  def listUsers: TwitterFuture[Seq[User]] =
+    db.run {
+      users.result
+    }.toTwitterFuture
+
+  def createUser(user: User) : TwitterFuture[Option[User]] = {
+
+    val transaction = users.filter(_.username === user.username).result.headOption.flatMap {
+      case Some(u) => DBIO.successful(None)
+      case None =>
+        val userId =
+          (users returning users.map(_.id)) += User(
+            id = 0,
+            email = user.email,
+            password = user.password,
+            username = user.username
+          )
+
+        val newUser = userId.map { id =>
+          User(id,user.username,"",user.email)
+        }
+        newUser
+    }.transactionally
+    db.run(transaction).map {
+      case u: User => Option(u)
       case None => None
-    }
-  }
-
-  def createUser(user: User) : Future[Option[User]] = {
-    val request = createPostRequestWithQuery(
-      s"/users"
-    )
-    client(request) map { response =>
-
-    }
-    Future exception  new Exception("Not Implemented")
+    }.toTwitterFuture
   }
 }
-
