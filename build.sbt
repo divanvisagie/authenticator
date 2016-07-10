@@ -12,6 +12,7 @@ lazy val versions = new {
   val specs2 = "2.3.12"
   val slick = "3.1.1"
   val bijection = "0.9.2"
+  val finagle = "6.34.0"
 }
 
 lazy val baseSettings = Seq(
@@ -38,7 +39,7 @@ lazy val root = (project in file(".")).
   ).
   aggregate(
     idl,
-    server)
+    auth)
 
 lazy val idl = (project in file("swiss-guard-idl")).
   settings(baseSettings).
@@ -61,8 +62,8 @@ lazy val client = (project in file("test-client")).
     libraryDependencies ++= Seq(
 
       "org.scala-lang" % "scala-compiler" % scalaVersion.value,
-      "com.twitter" %% "finagle-core" % "6.34.0",
-      "com.twitter" % "finagle-thrift_2.11" % "6.34.0",
+      "com.twitter" %% "finagle-core" % versions.finagle,
+      "com.twitter" % "finagle-thrift_2.11" % versions.finagle,
       "org.apache.thrift" % "libthrift" % "0.9.0" % "compile",
 
       "com.twitter.finatra" %% "finatra-http" % versions.finatra,
@@ -92,7 +93,7 @@ lazy val client = (project in file("test-client")).
 
   ).dependsOn(idl)
 
-lazy val server = (project in file("server")).
+lazy val auth = (project in file("authentication")).
   enablePlugins(JavaServerAppPackaging).
   settings(baseSettings).
   settings(
@@ -103,7 +104,6 @@ lazy val server = (project in file("server")).
     flywayUser := "postgres",
     flywayPassword := "postgres",
     flywayLocations += "filesystem:database/flyway/sql",
-    // dockerBaseImage := "java:alpine",
     libraryDependencies ++= Seq(
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra,
       "ch.qos.logback" % "logback-classic" % versions.logback,
@@ -112,8 +112,11 @@ lazy val server = (project in file("server")).
       "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",
       "com.typesafe.slick" %% "slick" % versions.slick,
       "org.slf4j" % "slf4j-nop" % "1.6.4",
+      "com.typesafe.akka" %% "akka-actor" % "2.4.8",
+
 
       "com.jason-goodwin" %% "authentikat-jwt" % "0.4.1",
+
 
       "com.twitter.finatra" %% "finatra-thrift" % versions.finatra % "test",
       "com.twitter.inject" %% "inject-app" % versions.finatra % "test",

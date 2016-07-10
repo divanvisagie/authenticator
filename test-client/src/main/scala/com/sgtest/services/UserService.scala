@@ -1,8 +1,7 @@
 package com.sgtest.services
 
 import javax.inject.Singleton
-
-import com.swissguard.user.thriftscala.{AuthenticationRequest, UserService => TUserService}
+import com.swissguard.authentication.thriftscala.{RegistrationRequest, LoginRequest,  AuthenticationService => TAuthenticationService}
 import com.twitter.finagle._
 import com.twitter.finagle.service.RetryBudget
 import com.twitter.finagle.stats.{DefaultStatsReceiver, NullStatsReceiver}
@@ -29,14 +28,14 @@ class UserService {
     percentCanRetry = 0.1
   )
 
-  private val client: TUserService[Future] = ThriftMux.client
+  private val client: TAuthenticationService[Future] = ThriftMux.client
     .withTracer(tracer)
     .withStatsReceiver(receiver)
     .withLabel("test-client")
-    .newIface[TUserService.FutureIface]("localhost:9999")
+    .newIface[TAuthenticationService.FutureIface]("localhost:9999")
 
-  def registerUser(user: AuthenticationRequest) = client.register(user)
-  def login(user: AuthenticationRequest) = client.login(user)
+  def registerUser(registrationRequest: RegistrationRequest) = client.register(registrationRequest)
+  def login(loginRequest: LoginRequest) = client.login(loginRequest)
 }
 
 //http://localhost:8888/register

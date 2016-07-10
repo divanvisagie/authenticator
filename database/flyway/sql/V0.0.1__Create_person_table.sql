@@ -1,10 +1,17 @@
 CREATE TABLE users
 (
-  id bigserial NOT NULL,
-  username character varying,
-  password_hash character varying,
-  CONSTRAINT pk PRIMARY KEY (id),
-  CONSTRAINT un UNIQUE(username)
+  id bigserial primary key,
+  username text not null unique,
+  password text null,
+  email text not null unique
 );
 
-insert into users(username,password_hash) values ('bob','$2a$10$uIXsjBLBvguLkg6SXGi/JOyHR92hkwUR43vwIcQdRO4ac.FwKbwgi'), ('mary','marys-hash');
+
+
+insert into users(username,email, password)
+values (
+    'bob',
+    'bob@sg.com',
+    '$2a$10$uIXsjBLBvguLkg6SXGi/JOyHR92hkwUR43vwIcQdRO4ac.FwKbwgi'
+);
+

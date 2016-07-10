@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-sbt server/docker:stage
-docker build -t divanvisagie/swissguard server/target/docker/stage
+sbt auth/docker:stage
+docker build -t divanvisagie/swissguard-auth authentication/target/docker/stage
 

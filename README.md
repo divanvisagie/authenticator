@@ -11,7 +11,7 @@ A Finatra Thrift server application for users and authentication.
 ### Migrations
 
 ```sh
-sbt server/flywayMigrate
+sbt auth/flywayMigrate
 ```
 
 ### Update Submodules
@@ -22,13 +22,13 @@ git submodule update --init --recursive
 
 ### Environment variables
 
-#### Postgres
+#### Database
 
 Name           | Description                | Default
 -------------- | -------------------------- | ---------------
-SG_PG_INET     | Postgres url               | localhost:54321
-SG_PG_USERNAME | Postgres database username | postgres
-SG_PG_PASSWORD | Postgres database password | postgres
+SG_DB_HOST     | Postgres url               | localhost:54321
+SG_DB_USERNAME | Postgres database username | postgres
+SG_DB_PASSWORD | Postgres database password | postgres
 
 #### Tokens
 

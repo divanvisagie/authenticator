@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker push divanvisagie/swissguard
+docker push divanvisagie/swissguard-auth

@@ -1,23 +1,31 @@
 version: '2'
+
+### Creates a named network with the default bridge driver
+# The network is shared between restheart and mongodb only
+# See: https://docs.docker.com/engine/userguide/networking/dockernetworks/
+# See: https://docs.docker.com/engine/reference/commandline/network_create/
+networks:
+   backend:
+
 services:
   postgres:
-    image: postgres:latest
-    environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
-        - POSTGRES_DB=swissguard
-    ports:
-      - "54321:5432"
+     image: postgres:latest
+     environment:
+         - POSTGRES_USER=postgres
+         - POSTGRES_PASSWORD=postgres
+         - POSTGRES_DB=swissguard
+     ports:
+       - "54321:5432"
 
   storage:
-      image: openzipkin/zipkin-cassandra:1.1.5
-      container_name: cassandra
-      ports:
-        - 9042:9042
+    image: openzipkin/zipkin-cassandra:1.2.1
+    container_name: cassandra
+    ports:
+      - 9042:9042
   # The zipkin process services the UI, and also exposes a POST endpoint that
   # instrumentation can send trace data to. Scribe is enabled by default.
   zipkin:
-    image: openzipkin/zipkin:1.1.5
+    image: openzipkin/zipkin:1.2.1
     container_name: zipkin
     environment:
       - STORAGE_TYPE=cassandra

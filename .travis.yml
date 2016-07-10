@@ -22,8 +22,8 @@ jdk:
 
 script:
   - sbt clean
-  - sbt server/flywayMigrate
-  - sbt server/test
+  - sbt auth/flywayMigrate
+  - sbt auth/test
   - sh docker-build.sh
 
 after_success:
