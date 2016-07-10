@@ -5,8 +5,9 @@ import javax.inject.{Inject, Singleton}
 import com.swissguard.authentication.thriftscala.{AuthenticationService => TAuthenticationService}
 import com.swissguard.domain.User
 import com.swissguard.services.{AuthenticationService, LoginService, RegistrationService}
-import com.swissguard.authentication.thriftscala.AuthenticationService.{ClaimsForToken, Login, Register, ValidateToken}
+import com.swissguard.authentication.thriftscala.AuthenticationService.{ClaimsForToken, Login, Register, ValidateToken, InvalidateToken}
 import com.twitter.finatra.thrift.Controller
+import com.twitter.util.Future
 
 @Singleton
 class AuthenticationController @Inject()(
@@ -35,5 +36,9 @@ class AuthenticationController @Inject()(
 
     override def claimsForToken = handle(ClaimsForToken) { args: ClaimsForToken.Args =>
       authenticationService.claimsForToken(args.token)
+    }
+
+    override  def invalidateToken = handle(InvalidateToken) { args: InvalidateToken.Args =>
+      Future exception new Exception("Not Implemented")
     }
 }
