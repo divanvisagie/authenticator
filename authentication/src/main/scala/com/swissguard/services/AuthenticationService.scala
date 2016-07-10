@@ -17,10 +17,17 @@ class AuthenticationService @Inject()(
     Future value tokenizer.validate(token)
   }
 
-  def claimsForToken(token: String) = Future value Claims(
-    userId = "",
-    username = "",
-    claims = List()
-  )
+  def claimsForToken(token: String): Future[Claims] = {
+
+    tokenizer.getPayloadForToken(token).getOrElse(None) match {
+      case Some(payload: Map[String,String]) => Future value Claims (
+        userId = payload("userId"),
+        username = payload("userName"),
+        claims = List()
+      )
+      case _ => Future exception new Exception("No payload")
+    }
+
+  }
 
 }
