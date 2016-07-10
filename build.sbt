@@ -54,7 +54,7 @@ lazy val idl = (project in file("swiss-guard-idl")).
     )
   )
 
-lazy val client = (project in file("test-client")).
+lazy val masque = (project in file("masque")).
   settings(baseSettings).
   settings (
     name := "test-client",
