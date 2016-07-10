@@ -2,14 +2,11 @@ package com.swissguard.repositories
 
 import javax.inject.Inject
 
+import com.github.ikhoon.TwitterFutureOps._
 import com.swissguard.domain.User
+import com.twitter.util.{Future => TwitterFuture}
 import slick.driver.PostgresDriver.api._
 
-import com.github.ikhoon.TwitterFutureOps._
-import com.github.t3hnar.bcrypt._
-
-import scala.concurrent.Future
-import com.twitter.util.{ Future => TwitterFuture }
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class UserRepository @Inject()(db: Database) {
